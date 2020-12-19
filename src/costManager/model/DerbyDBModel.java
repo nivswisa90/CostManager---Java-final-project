@@ -164,6 +164,7 @@ public class DerbyDBModel implements IModel {
 
     @Override
     public void getCostReport(Date start, Date end) throws CostManagerException {
+        //needs to build a function
 
     }
 
