@@ -56,7 +56,7 @@ public class CostItem {
 
     public String getDate() { return date; }
 
-    public void setDate(String data) { this.date = date; }
+    public void setDate(String date) { this.date = date; }
 
 
 }

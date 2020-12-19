@@ -1,5 +1,8 @@
 package costManager.model;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -100,14 +103,19 @@ public class DerbyDBModel implements IModel {
         try{
             String query = "INSERT into inventory (categoryId,amount,currency,description,date) "
                     + "values (?,?,?,?,?)";
+            String date = item.getDate();
+            String queryDate = "CAST('" + date + "' AS DATE)";
 
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date myDate = formatter.parse(date);
+            java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
             // create the mysql insert prepared statement
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setInt(1,item.getCategory().getId());
             preparedStmt.setDouble (2, item.getAmount());
             preparedStmt.setString  (3, item.getCurrency().name());
             preparedStmt.setString(4, item.getDescription());
-            preparedStmt.setString(5, item.getDate());
+            preparedStmt.setDate(5, sqlDate);
 
             // execute the prepared statement
             preparedStmt.execute();
@@ -116,10 +124,10 @@ public class DerbyDBModel implements IModel {
                 System.out.println("id - " + rs.getInt("id") + " \nCategory - " +
                         rs.getInt("categoryId") + " \nAmount - " + rs.getDouble("amount") +
                         " \ncurrency - " + rs.getString("currency") +
-                        " \nDescription - " + rs.getString("description") + " \nDate - " + rs.getString("date"));
+                        " \nDescription - " + rs.getString("description") + " \nDate - " + rs.getDate("date"));
             }
         }
-        catch(SQLException e) {
+        catch(SQLException | ParseException e) {
             throw new CostManagerException("Problem with adding cost!",e);
         }
     }
@@ -164,7 +172,7 @@ public class DerbyDBModel implements IModel {
 
     @Override
     public void getCostReport(Date start, Date end) throws CostManagerException {
-        //needs to build a function
+
 
     }
 
