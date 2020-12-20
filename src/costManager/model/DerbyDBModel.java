@@ -1,4 +1,13 @@
 package costManager.model;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+
+
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -6,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 public class DerbyDBModel implements IModel {
     private static String driver = "org.apache.derby.jdbc.ClientDriver";
@@ -23,6 +33,7 @@ public class DerbyDBModel implements IModel {
             //getting connection by calling get connection
             connection = DriverManager.getConnection(protocol);
             statement = connection.createStatement();
+
         }
         catch(SQLException | ClassNotFoundException e) {
             throw new CostManagerException("Problem with the connection",e);
@@ -53,6 +64,7 @@ public class DerbyDBModel implements IModel {
                 addNewCategory(new Category(2, "Electricity"));
                 addNewCategory(new Category(3,"Arnona"));
             }
+            System.out.println("Table " + tableName + " created successfully");
         }catch(SQLException e) {
             throw new CostManagerException("Problem with creation a table!",e);
         }
@@ -79,6 +91,7 @@ public class DerbyDBModel implements IModel {
         String query = "DROP table " + tableName;
         try {
             statement.execute(query);
+            System.out.println("Deleted table " + tableName);
         }catch(SQLException e) {
             throw new CostManagerException("Problem with adding cost!",e);
         }
@@ -95,7 +108,6 @@ public class DerbyDBModel implements IModel {
             }
         }
     }
-
 
 
     @Override
@@ -188,8 +200,23 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public void getPieChart(Date start, Date end) throws CostManagerException {
+    public void getPieChart(String start, String end) throws CostManagerException {// needs to fix names on category id
+        try{
+            String query = "SELECT * FROM inventory WHERE Date between '" + start + "' and '" + end + "'";
+            rs = statement.executeQuery(query);
+            DefaultPieDataset dataset = new DefaultPieDataset();
+            while(rs.next()){
+                dataset.setValue(rs.getString("categoryId"),Double.parseDouble(rs.getString("amount")));
+            }
+            JFreeChart chart = ChartFactory.createPieChart("Category - amounts",dataset,true,true,false);
+            int width = 560;
+            int height = 370;
+            File pieChart = new File("Pie_Chart.jpeg");
+            ChartUtilities.saveChartAsJPEG(pieChart,chart,width,height);
 
+        } catch (SQLException | IOException e) {
+            throw new CostManagerException("Problem getting data from specified dates");
+        }
     }
 }
 
