@@ -104,7 +104,6 @@ public class DerbyDBModel implements IModel {
             String query = "INSERT into inventory (categoryId,amount,currency,description,date) "
                     + "values (?,?,?,?,?)";
             String date = item.getDate();
-            String queryDate = "CAST('" + date + "' AS DATE)";
 
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date myDate = formatter.parse(date);
@@ -171,7 +170,19 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public void getCostReport(Date start, Date end) throws CostManagerException {
+    public void getCostReport(String start, String end) throws CostManagerException {
+        String query = "SELECT * FROM inventory WHERE Date between '" + start + "' and '" + end + "'";
+        try {
+            rs = statement.executeQuery(query);
+            while(rs.next()) {
+                System.out.println("id - " + rs.getInt("id") + " \nCategory - " +
+                        rs.getInt("categoryId") + " \nAmount - " + rs.getDouble("amount") +
+                        " \ncurrency - " + rs.getString("currency") +
+                        " \nDescription - " + rs.getString("description") + " \nDate - " + rs.getDate("date"));
+            }
+        } catch (SQLException e) {
+            throw new CostManagerException("Problem getting data from specified dates");
+        }
 
 
     }
