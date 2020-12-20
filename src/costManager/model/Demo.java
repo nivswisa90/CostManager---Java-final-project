@@ -35,7 +35,7 @@ public class Demo {
 
             model.getPieChart("2020-01-01", "2021-12-31");
 
-            model.getPieChart("2019-01-01", "2020-03-31");
+//            model.getPieChart("2019-01-01", "2020-03-31");
 
         }catch (CostManagerException e) {
             throw new CostManagerException("cant", e);
