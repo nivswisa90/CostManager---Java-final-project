@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+
 import costManager.model.*;
 
 public class DerbyDBModelTest {
@@ -28,6 +29,16 @@ public class DerbyDBModelTest {
     }
 
     @Test
+    public void createConnection(){
+        String expected = "Problem with the connection";
+        try {
+            model.createConnection();
+        } catch (CostManagerException e) {
+            assertEquals(expected,e.getMessage());
+        }
+    }
+
+    @Test
     public void addCostItem(){
         String expected = "Problem with adding cost!";
         try {
@@ -39,6 +50,13 @@ public class DerbyDBModelTest {
 
     @Test
     public void deleteCostItem() {
+        String expected = "Problem with deleting cost!";
+        try{
+            model.deleteCostItem(item);
+        } catch (CostManagerException e) {
+            assertEquals(expected,e.getMessage());
+        }
+
     }
 
     @Test
@@ -53,9 +71,23 @@ public class DerbyDBModelTest {
 
     @Test
     public void getCostReport() {
+
+        String expected = "Problem getting data from specified dates";
+        try {
+            model.getCostReport("2020-01-01","2020-03-31");
+        } catch (CostManagerException e) {
+            assertEquals(expected,e.getMessage());
+        }
+
     }
 
     @Test
     public void getPieChart() {
+        String expected = "Problem getting data from specified dates";
+        try {
+            model.getCostReport("2020-01-01","2020-03-31");
+        } catch (CostManagerException e) {
+            assertEquals(expected,e.getMessage());
+        }
     }
 }
