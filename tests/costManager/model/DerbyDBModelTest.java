@@ -6,7 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+
 import costManager.model.*;
+
 
 public class DerbyDBModelTest {
 
@@ -26,6 +28,15 @@ public class DerbyDBModelTest {
         cat = null;
         item = null;
         model.stopConnection();
+    }
+    @Test
+    public void createConnection(){
+        String expected = "Problem with the connection";
+        try {
+            model.createConnection();
+        } catch (CostManagerException e) {
+            assertEquals(expected,e.getMessage());
+        }
     }
 
     @Test
@@ -56,6 +67,8 @@ public class DerbyDBModelTest {
         } catch (CostManagerException e) {
             assertEquals(expected,e.getMessage());
         }
+
+
 
     }
 
