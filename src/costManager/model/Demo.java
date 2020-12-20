@@ -21,8 +21,9 @@ public class Demo {
 //            for(int i = 0; i<categoryList.size(); i++) {
 //                System.out.println(categoryList.get(i));
 //            }
-            CostItem item = new CostItem(15, categoryList.get(0),14.33, Currency.EURO,"test4","2020-12-03");
-            model.addCostItem(item);
+//            CostItem item = new CostItem(15, categoryList.get(0),14.33, Currency.EURO,"test4","2021-12-03");
+//            model.addCostItem(item);
+            model.getCostReport("2020-12-01", "2020-12-31");
 
         }catch (CostManagerException e) {
             throw new CostManagerException("cant", e);
