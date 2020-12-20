@@ -7,6 +7,6 @@ public interface IModel {
     public void deleteCostItem(CostItem item) throws CostManagerException;
     public void addNewCategory(Category category) throws CostManagerException;
     public void getCostReport(String start, String end) throws CostManagerException;
-    public void getPieChart(Date start, Date end) throws CostManagerException;// and the way it splits?????
+    public void getPieChart(String start, String end) throws CostManagerException;// and the way it splits?????
 
 }
