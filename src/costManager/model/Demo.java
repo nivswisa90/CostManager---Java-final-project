@@ -20,7 +20,7 @@ public class Demo {
 //            for(int i = 0; i<categoryList.size(); i++) {
 //                System.out.println(categoryList.get(i));
 //            }
-//            CostItem item = new CostItem(10, categoryList.get(2),45.5, Currency.ILS,"Salary","2020-02-20");
+//            CostItem item = new CostItem(10, categoryList.get(2),45.5, Currency.ILS,"Salary","2019-02-20");
 //            CostItem item1 = new CostItem(45, categoryList.get(3),21, Currency.GBP,"Salary","2020-03-20");
 //            CostItem item2 = new CostItem(4, categoryList.get(0),45.5, Currency.ILS,"Pay","2020-04-12");
 //            CostItem item3 = new CostItem(1, categoryList.get(3),12, Currency.USD,"Pay","2020-04-12");
@@ -31,7 +31,7 @@ public class Demo {
 //            model.addCostItem(item2);
 //            model.addCostItem(item3);
 //            model.getCostReport("2020-01-01", "2020-03-31");
-            model.getPieChart("2020-01-01", "2020-03-31");
+            model.getPieChart("2019-01-01", "2020-03-31");
         }catch (CostManagerException e) {
             throw new CostManagerException("cant", e);
         }
