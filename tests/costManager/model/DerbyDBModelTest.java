@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import costManager.model.*;
 
 public class DerbyDBModelTest {
 
@@ -26,6 +27,7 @@ public class DerbyDBModelTest {
         item = null;
         model.stopConnection();
     }
+
     @Test
     public void createConnection(){
         String expected = "Problem with the connection";
@@ -54,6 +56,7 @@ public class DerbyDBModelTest {
         } catch (CostManagerException e) {
             assertEquals(expected,e.getMessage());
         }
+
     }
 
     @Test
@@ -68,12 +71,14 @@ public class DerbyDBModelTest {
 
     @Test
     public void getCostReport() {
+
         String expected = "Problem getting data from specified dates";
         try {
             model.getCostReport("2020-01-01","2020-03-31");
         } catch (CostManagerException e) {
             assertEquals(expected,e.getMessage());
         }
+
     }
 
     @Test
