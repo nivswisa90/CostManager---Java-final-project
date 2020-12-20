@@ -202,11 +202,14 @@ public class DerbyDBModel implements IModel {
     @Override
     public void getPieChart(String start, String end) throws CostManagerException {// needs to fix names on category id
         try{
-            String query = "SELECT * FROM inventory WHERE Date between '" + start + "' and '" + end + "'";
-            rs = statement.executeQuery(query);
+            String joinQuery = "SELECT * FROM inventory INNER JOIN categories on categoryId=categories.id WHERE Date " +
+                    "between '" + start + "' and '" + end + "'";
+            rs = statement.executeQuery(joinQuery);
+//            String query = "SELECT * FROM inventory WHERE Date between '" + start + "' and '" + end + "'";
+//            rs = statement.executeQuery(query);
             DefaultPieDataset dataset = new DefaultPieDataset();
             while(rs.next()){
-                dataset.setValue(rs.getString("categoryId"),Double.parseDouble(rs.getString("amount")));
+                dataset.setValue(rs.getString("name"),Double.parseDouble(rs.getString("amount")));
             }
             JFreeChart chart = ChartFactory.createPieChart("Category - amounts",dataset,true,true,false);
             int width = 560;

@@ -31,7 +31,7 @@ public class Demo {
 //            model.addCostItem(item2);
 //            model.addCostItem(item3);
 //            model.getCostReport("2020-01-01", "2020-03-31");
-            model.getPieChart("2020-01-01", "2020-03-31");
+            model.getPieChart("2020-12-01", "2020-12-31");
         }catch (CostManagerException e) {
             throw new CostManagerException("cant", e);
         }
