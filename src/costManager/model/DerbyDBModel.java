@@ -18,8 +18,8 @@ import java.util.List;
 
 
 public class DerbyDBModel implements IModel {
-    private static String driver = "org.apache.derby.jdbc.ClientDriver";
-    private static String protocol = "jdbc:derby://localhost:1527/gagamoDB;create=true";
+    private static String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+    private static String protocol = "jdbc:derby:gagamoDB;create=true";
 
     private static Connection connection = null;
     private static Statement statement = null;
