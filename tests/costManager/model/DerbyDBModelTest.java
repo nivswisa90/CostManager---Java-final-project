@@ -39,15 +39,6 @@ public class DerbyDBModelTest {
         }
     }
 
-    @Test
-    public void createConnection(){
-        String expected = "Problem with the connection";
-        try {
-            model.createConnection();
-        } catch (CostManagerException e) {
-            assertEquals(expected,e.getMessage());
-        }
-    }
 
     @Test
     public void addCostItem(){
