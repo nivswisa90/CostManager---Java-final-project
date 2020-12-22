@@ -18,6 +18,10 @@ import java.util.List;
 
 
 public class DerbyDBModel implements IModel {
+    /**
+     * DataBase model using DerbyDB and implements the IModel interface, create embedded connection to the DB,
+     * creates a DB called gagamoDB at the end close the connections.
+     */
     private static String driver = "org.apache.derby.jdbc.EmbeddedDriver";
     private static String protocol = "jdbc:derby:gagamoDB;create=true";
 
@@ -28,6 +32,10 @@ public class DerbyDBModel implements IModel {
 
 
     public void createConnection() throws CostManagerException {
+        /**
+         * using the Driver and trying to connect and create the data base,
+         * if fail exception will be catch and throws error of the cost manager exception class.
+         */
         try {
             Class.forName(driver);
             //getting connection by calling get connection
@@ -41,6 +49,10 @@ public class DerbyDBModel implements IModel {
     }
 
     public void stopConnection() throws CostManagerException {
+        /**
+         * At end of using the connection, trying to close statement and the result set,
+         * if fail thrown exception of cost manager exception class.
+         */
         if(statement != null) try{
             statement.close();
         }catch (SQLException e){
@@ -55,7 +67,11 @@ public class DerbyDBModel implements IModel {
     }
 
     public void createTable(String tableName, String columns) throws CostManagerException {
-
+        /**
+         * Using just at the beginning, creates a table with name and information.
+         * if table created successfully enters 3 default categories to a defined table;
+         * happens only once!.
+         */
         String query = "CREATE table " + tableName + " " + columns;
         try{
             statement.execute(query);
@@ -68,10 +84,12 @@ public class DerbyDBModel implements IModel {
         }catch(SQLException e) {
             throw new CostManagerException("Problem with creation a table!",e);
         }
-
     }
 
     public List<Category> getCategoryList() throws CostManagerException {
+        /**
+         * Using SQL query to get all the categories from the table , enter them to a new list and returns it.
+         */
         List<Category> categoryList = new ArrayList<Category>();
 
         try{
@@ -88,6 +106,9 @@ public class DerbyDBModel implements IModel {
     }
 
     public void deleteTable(String tableName) throws CostManagerException {
+        /**
+         * help function, if we want to change the table and delete.
+         */
         String query = "DROP table " + tableName;
         try {
             statement.execute(query);
@@ -95,23 +116,15 @@ public class DerbyDBModel implements IModel {
         }catch(SQLException e) {
             throw new CostManagerException("Problem with adding cost!",e);
         }
-        finally {
-            if (statement != null) try {
-                statement.close();
-            } catch (SQLException e) {
-                throw new CostManagerException("Problem with closing statement!", e);
-            }
-            if (rs != null) try {
-                rs.close();
-            } catch (SQLException e) {
-                throw new CostManagerException("Problem with closing result", e);
-            }
-        }
     }
-
 
     @Override
     public void addCostItem(CostItem item) throws CostManagerException {
+        /**
+         * Using query to add values into fixed table of cost items,
+         * first making prepared statements and then safely enter each value to his place,
+         * then execute the statement and if thrown exception it will be catch by our costmangerexception class.
+         */
         try{
             String query = "INSERT into inventory (categoryId,amount,currency,description,date) "
                     + "values (?,?,?,?,?)";
@@ -130,13 +143,6 @@ public class DerbyDBModel implements IModel {
 
             // execute the prepared statement
             preparedStmt.execute();
-            rs = statement.executeQuery("SELECT * FROM inventory ORDER BY id");
-            while(rs.next()){
-                System.out.println("id - " + rs.getInt("id") + " \nCategory - " +
-                        rs.getInt("categoryId") + " \nAmount - " + rs.getDouble("amount") +
-                        " \ncurrency - " + rs.getString("currency") +
-                        " \nDescription - " + rs.getString("description") + " \nDate - " + rs.getDate("date"));
-            }
         }
         catch(SQLException | ParseException e) {
             throw new CostManagerException("Problem with adding cost!",e);
@@ -144,16 +150,12 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    //Need to check
     public void deleteCostItem(CostItem item) throws CostManagerException {
+        /**
+         * Deleting from the table in the data base by using query , if fail exception will be catch.
+         */
         try{
             statement.executeUpdate("DELETE from inventory WHERE id=" + item.getId() + "");
-            rs = statement.executeQuery("SELECT * FROM inventory ORDER BY id");
-            while(rs.next()){
-                System.out.println("id - " + rs.getInt("id") + " \nCategory - " + rs.getString("category")
-                        + " \nAmount - " + rs.getDouble("amount") + " \ncurrency - " + rs.getString("currency")
-                        + " \nDescription - " + rs.getString("description") + " \nDate - " + rs.getString("date"));
-            }
         }
         catch(SQLException e) {
             throw new CostManagerException("Problem with deleting cost!",e);
@@ -162,19 +164,18 @@ public class DerbyDBModel implements IModel {
 
     @Override
     public void addNewCategory(Category category) throws CostManagerException {
+        /**
+         * Making Prepared statement and enter his value safely to the table.
+         *
+         */
         try{
             String query = "INSERT into categories (name) " + "values (?)";
             // create the mysql insert prepared statement
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setString(1,category.getName());
 
-
             // execute the prepared statement
             preparedStmt.execute();
-            rs = statement.executeQuery("SELECT * FROM categories ORDER BY id");
-            while(rs.next()){
-                System.out.println("id - " + rs.getInt("id") + " \nName - " + rs.getString("name"));
-            }
         }
         catch(SQLException e) {
             throw new CostManagerException("Problem with adding cost!",e);
@@ -183,6 +184,10 @@ public class DerbyDBModel implements IModel {
 
     @Override
     public void getCostReport(String start, String end) throws CostManagerException {
+        /**
+         * Get all the cost between start date to end date, using the result set to output stream the data.
+         * if fail throws exception.
+         */
         String query = "SELECT * FROM inventory WHERE Date between '" + start + "' and '" + end + "'";
         try {
             rs = statement.executeQuery(query);
@@ -195,18 +200,19 @@ public class DerbyDBModel implements IModel {
         } catch (SQLException e) {
             throw new CostManagerException("Problem getting data from specified dates");
         }
-
-
     }
 
     @Override
-    public void getPieChart(String start, String end) throws CostManagerException {// needs to fix names on category id
+    public void getPieChart(String start, String end) throws CostManagerException {
+        /**
+         * using jfreechart library to create image of pie chart with the relevant information,
+         * inner join both tables inventory and category to get the name of the category,
+         * between start and end dates,  the result (dataset) will be use  in the library function to create the pie chart.
+         */
         try{
             String joinQuery = "SELECT * FROM inventory INNER JOIN categories on categoryId=categories.id WHERE Date " +
                     "between '" + start + "' and '" + end + "'";
             rs = statement.executeQuery(joinQuery);
-//            String query = "SELECT * FROM inventory WHERE Date between '" + start + "' and '" + end + "'";
-//            rs = statement.executeQuery(query);
             DefaultPieDataset dataset = new DefaultPieDataset();
             while(rs.next()){
                 dataset.setValue(rs.getString("name"),Double.parseDouble(rs.getString("amount")));

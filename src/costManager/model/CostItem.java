@@ -1,12 +1,12 @@
 package costManager.model;
 
+
+
 public class CostItem {
-
-//    private String description;
-//    private double sum;
-//    private Currency currency;
-//    private int id;
-
+    /**
+     * CostItem class , used to hold information about the expense
+     * and got getters and setters for all members of the class.
+     */
     private int id;
     private Category category;
     private double amount;
@@ -15,6 +15,9 @@ public class CostItem {
     private String date;
 
     public CostItem(int id, Category category, double amount, Currency currency, String description, String date) {
+        /**
+         * Constructor for the object, use the methods to assign the values inside the members.
+         */
         setId(id);
         setCategory(category);
         setAmount(amount);
@@ -22,33 +25,25 @@ public class CostItem {
         setDescription(description);
         setDate(date);
     }
+
+    /**
+     * Setters and Getter for the functionality of the object Cost Item
+     */
     public void setId(int id) {this.id = id; }
 
     public int getId() { return this.id; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setDescription(String description) { this.description = description; }
 
-    public double getAmount() {
-        return amount;
-    }
+    public double getAmount() { return amount; }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+    public void setAmount(double amount) { this.amount = amount; }
 
-    public Currency getCurrency() {
-        return currency;
-    }
+    public Currency getCurrency() { return currency; }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
+    public void setCurrency(Currency currency) { this.currency = currency; }
 
     public Category getCategory() {return category;}
 
@@ -58,5 +53,15 @@ public class CostItem {
 
     public void setDate(String date) { this.date = date; }
 
-
+    @Override
+    public String toString() {
+        return "CostItem{" +
+                "id=" + id +
+                ", category=" + category +
+                ", amount=" + amount +
+                ", currency=" + currency +
+                ", description='" + description + '\'' +
+                ", date='" + date + '\'' +
+                '}';
+    }
 }
