@@ -26,7 +26,6 @@ public class Demo {
 //            CostItem item2 = new CostItem(4, categoryList.get(0),45.5, Currency.ILS,"Pay","2020-04-12");
 //            CostItem item3 = new CostItem(1, categoryList.get(1),12, Currency.USD,"Pay","2020-04-12");
 
-
 //            model.addCostItem(item);
 //            model.addCostItem(item1);
 //            model.addCostItem(item2);
@@ -34,8 +33,6 @@ public class Demo {
 //            model.getCostReport("2020-01-01", "2020-03-31");
 
             model.getPieChart("2020-01-01", "2021-12-31");
-
-//            model.getPieChart("2019-01-01", "2020-03-31");
 
         }catch (CostManagerException e) {
             throw new CostManagerException("cant", e);
@@ -47,22 +44,6 @@ public class Demo {
                 throw new CostManagerException("Error closing connection");
             }
         }
-
-
-
-
-
-
-
-//           CostItem item = new CostItem(5,"Arnona", 99.6, Currency.GBP, "Third cost", "2020-12-16");
-//           model.addCostItem(item);
-//            model.deleteCostItem(item);
-//            model.createTable("inventory","(id int PRIMARY KEY,category varchar(256),amount double, currency varchar(250),description varchar(250),date varchar(256))");
-//            model.createTable("category", "(id int PRIMARY KEY , name varchar(256))");
-//            model.addNewCategory(4, "Test2");
-//            model.deleteTable("category");
-
-//            model.getId("inventory");
 
     }
 }
