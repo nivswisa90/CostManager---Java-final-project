@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-import costManager.model.*;
 
 
 public class DerbyDBModelTest {
