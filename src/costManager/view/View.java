@@ -8,16 +8,19 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class View implements IView {
-
-    //main members
+    /**
+     * main page members
+     */
     private JFrame frame;
     private JPanel mainPanel;
     private JLabel mainCostLabel, mainCategoryLabel, mainReportLabel;
     private JButton mainCostButton, mainCategoryButton, mainReportButton;
 
 
+    /**
+     * View class constructor
+     */
     public View() {
-        //main panel
         frame = new JFrame("Cost Manager");
         mainPanel = new JPanel();
         mainCostLabel = new JLabel("Add a new cost");
@@ -28,6 +31,10 @@ public class View implements IView {
         mainReportButton = new JButton("Go");
     }
 
+
+    /**
+     *  Initialize every member of the main page
+     */
     public void init() {
         frame.setLayout(new BorderLayout());
         mainPanel.setBackground(Color.CYAN);
@@ -44,6 +51,9 @@ public class View implements IView {
         frame.setSize(800,400);
         frame.setVisible(true);
 
+        /**
+         * Clicking the main cost button display the add new cost item layout
+         */
         mainCostButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,7 +61,9 @@ public class View implements IView {
                 displayAddCostItem();
             }
         });
-
+        /**
+         * Clicking the main category button display the add new category layout
+         */
         mainCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,6 +72,9 @@ public class View implements IView {
             }
         });
 
+        /**
+         * Clicking the main report button display the get reports layout
+         */
         mainReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,7 +82,9 @@ public class View implements IView {
                 displayGetCostReport();
             }
         });
-
+        /**
+         * Clicking the x button of the window the program is exit with status 0
+         */
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -75,7 +92,7 @@ public class View implements IView {
             }
         });
     }
-    
+
     @Override
     public void displayAddCostItem() {
         ViewCostItem costItem = new ViewCostItem();
@@ -91,6 +108,7 @@ public class View implements IView {
     @Override
     public void displayGetCostReport() {
         ViewGetReports reports = new ViewGetReports();
-        frame.add(reports.addToGetReportsPanel());
+        frame.add(reports.addToGetReportsPanel(), BorderLayout.CENTER);
+        frame.add(reports.buttons(), BorderLayout.SOUTH);
     }
 }
