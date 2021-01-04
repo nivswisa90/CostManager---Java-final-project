@@ -6,6 +6,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class View implements IView {
+    //main members
+    private JFrame frame;
+    private JPanel mainPanel;
+    private JLabel mainCostLabel, mainCategoryLabel, mainReportLabel;
+    private JButton mainCostButton, mainCategoryButton, mainReportButton;
+
     //add a new cost members
     private JFrame addCostFrame;
     private JPanel addCostPanel;
@@ -13,7 +19,21 @@ public class View implements IView {
     private JTextField categoryField, sumField, currencyField, dateField;
     private JButton submitCostButton;
 
+    //add new category members
+
+
     public View() {
+        //main panel
+        frame = new JFrame("Cost Manager");
+        mainPanel = new JPanel();
+        mainCostLabel = new JLabel("Add a new cost");
+        mainCategoryLabel = new JLabel("Add a new category");
+        mainReportLabel = new JLabel("Get cost reports");
+        mainCostButton = new JButton("Go");
+        mainCategoryButton = new JButton("Go");
+        mainReportButton = new JButton("Go");
+
+        //add cost Panel
         addCostFrame = new JFrame("Add a new cost");
         addCostPanel = new JPanel();
         categoryLabel = new JLabel("Choose category");
@@ -28,6 +48,30 @@ public class View implements IView {
 
     }
 
+    public void init() {
+        frame.setLayout(new BorderLayout());
+        mainPanel.setBackground(Color.CYAN);
+        mainPanel.setLayout(new GridLayout(3,2));
+        mainPanel.add(mainCostLabel);
+        mainPanel.add(mainCostButton);
+        mainPanel.add(mainCategoryLabel);
+        mainPanel.add(mainCategoryButton);
+        mainPanel.add(mainReportLabel);
+        mainPanel.add(mainReportButton);
+
+        frame.add(mainPanel);
+
+        frame.setSize(800,400);
+        frame.setVisible(true);
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
+    }
 
 
     @Override
