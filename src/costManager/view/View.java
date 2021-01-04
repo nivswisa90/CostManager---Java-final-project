@@ -2,24 +2,18 @@ package costManager.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class View implements IView {
+
     //main members
     private JFrame frame;
     private JPanel mainPanel;
     private JLabel mainCostLabel, mainCategoryLabel, mainReportLabel;
     private JButton mainCostButton, mainCategoryButton, mainReportButton;
-
-    //add a new cost members
-    private JFrame addCostFrame;
-    private JPanel addCostPanel;
-    private JLabel categoryLabel, sumLabel, currencyLabel, dateLabel;
-    private JTextField categoryField, sumField, currencyField, dateField;
-    private JButton submitCostButton;
-
-    //add new category members
 
 
     public View() {
@@ -32,20 +26,6 @@ public class View implements IView {
         mainCostButton = new JButton("Go");
         mainCategoryButton = new JButton("Go");
         mainReportButton = new JButton("Go");
-
-        //add cost Panel
-        addCostFrame = new JFrame("Add a new cost");
-        addCostPanel = new JPanel();
-        categoryLabel = new JLabel("Choose category");
-        sumLabel = new JLabel("Insert the amount");
-        currencyLabel = new JLabel("Choose the currency");
-        dateLabel = new JLabel("Select the date");
-        categoryField = new JTextField();
-        sumField = new JTextField();
-        currencyField = new JTextField();
-        dateField = new JTextField();
-        submitCostButton = new JButton("Submit");
-
     }
 
     public void init() {
@@ -64,51 +44,53 @@ public class View implements IView {
         frame.setSize(800,400);
         frame.setVisible(true);
 
+        mainCostButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.setVisible(false);
+                displayAddCostItem();
+            }
+        });
+
+        mainCategoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.setVisible(false);
+                displayAddNewCategory();
+            }
+        });
+
+        mainReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPanel.setVisible(false);
+                displayGetCostReport();
+            }
+        });
+
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         });
-
     }
-
-
+    
     @Override
     public void displayAddCostItem() {
-        addCostPanel.setBackground(Color.YELLOW);
-        addCostFrame.setLayout(new BorderLayout());
-        addCostPanel.setLayout(new GridLayout(5,2));
-
-        addCostPanel.add(categoryLabel);
-        addCostPanel.add(categoryField);
-        addCostFrame.add(addCostPanel);
-        addCostPanel.add(sumLabel);
-        addCostPanel.add(sumField);
-        addCostPanel.add(currencyLabel);
-        addCostPanel.add(currencyField);
-        addCostPanel.add(dateLabel);
-        addCostPanel.add(dateField);
-        addCostPanel.add(submitCostButton);
-
-        addCostFrame.setSize(800,400);
-        addCostFrame.setVisible(true);
-
-        addCostFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        ViewCostItem costItem = new ViewCostItem();
+        frame.add(costItem.addFieldsToPanel());
     }
 
     @Override
     public void displayAddNewCategory() {
-
+        ViewNewCategory newCategory = new ViewNewCategory();
+        frame.add(newCategory.addToCategoryPanel());
     }
 
     @Override
     public void displayGetCostReport() {
-
+        ViewGetReports reports = new ViewGetReports();
+        frame.add(reports.addToGetReportsPanel());
     }
 }
