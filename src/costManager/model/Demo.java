@@ -7,7 +7,7 @@ public class Demo {
     public static void main(String[] args) throws CostManagerException {
         DerbyDBModel model = new DerbyDBModel();
         try {
-            model.createConnection();
+//            model.createConnection();
 //            model.deleteTable("categories");
 //            model.createTable("categories", "(id int generated always as identity PRIMARY KEY , name varchar(256), " +
 //                    "CONSTRAINT UQ_Name UNIQUE(name))");
@@ -32,18 +32,19 @@ public class Demo {
 //            model.addCostItem(item3);
 //            model.getCostReport("2020-01-01", "2020-03-31");
 
-            model.getPieChart("2020-01-01", "2021-12-31");
+//            model.getPieChart("2020-01-01", "2021-12-31");
+            model.getCostReport("2020-01-01", "2021-01-01");
 
         }catch (CostManagerException e) {
             throw new CostManagerException("cant", e);
         }
-        finally {
-            try {
-                model.stopConnection();
-            }catch (CostManagerException e){
-                throw new CostManagerException("Error closing connection");
-            }
-        }
+//        finally {
+//            try {
+//                model.stopConnection();
+//            }catch (CostManagerException e){
+//                throw new CostManagerException("Error closing connection");
+//            }
+//        }
 
     }
 }

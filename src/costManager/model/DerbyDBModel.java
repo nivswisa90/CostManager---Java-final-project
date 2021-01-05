@@ -72,6 +72,8 @@ public class DerbyDBModel implements IModel {
          * if table created successfully enters 3 default categories to a defined table;
          * happens only once!.
          */
+
+        createConnection();
         String query = "CREATE table " + tableName + " " + columns;
         try{
             statement.execute(query);
@@ -84,12 +86,15 @@ public class DerbyDBModel implements IModel {
         }catch(SQLException e) {
             throw new CostManagerException("Problem with creation a table!",e);
         }
+        stopConnection();
     }
 
     public List<Category> getCategoryList() throws CostManagerException {
         /**
          * Using SQL query to get all the categories from the table , enter them to a new list and returns it.
          */
+
+        createConnection();
         List<Category> categoryList = new ArrayList<Category>();
 
         try{
@@ -102,6 +107,7 @@ public class DerbyDBModel implements IModel {
         } catch (SQLException e) {
             throw new CostManagerException("Problem with add category to the list");
         }
+        stopConnection();
         return categoryList;
     }
 
@@ -109,6 +115,7 @@ public class DerbyDBModel implements IModel {
         /**
          * help function, if we want to change the table and delete.
          */
+        createConnection();
         String query = "DROP table " + tableName;
         try {
             statement.execute(query);
@@ -116,6 +123,7 @@ public class DerbyDBModel implements IModel {
         }catch(SQLException e) {
             throw new CostManagerException("Problem with adding cost!",e);
         }
+        stopConnection();
     }
 
     @Override
@@ -125,6 +133,8 @@ public class DerbyDBModel implements IModel {
          * first making prepared statements and then safely enter each value to his place,
          * then execute the statement and if thrown exception it will be catch by our costmangerexception class.
          */
+
+        createConnection();
         try{
             String query = "INSERT into inventory (categoryId,amount,currency,description,date) "
                     + "values (?,?,?,?,?)";
@@ -147,6 +157,7 @@ public class DerbyDBModel implements IModel {
         catch(SQLException | ParseException e) {
             throw new CostManagerException("Problem with adding cost!",e);
         }
+        stopConnection();
     }
 
     @Override
@@ -154,12 +165,14 @@ public class DerbyDBModel implements IModel {
         /**
          * Deleting from the table in the data base by using query , if fail exception will be catch.
          */
+        createConnection();
         try{
             statement.executeUpdate("DELETE from inventory WHERE id=" + item.getId() + "");
         }
         catch(SQLException e) {
             throw new CostManagerException("Problem with deleting cost!",e);
         }
+        stopConnection();
     }
 
     @Override
@@ -168,6 +181,7 @@ public class DerbyDBModel implements IModel {
          * Making Prepared statement and enter his value safely to the table.
          *
          */
+        createConnection();
         try{
             String query = "INSERT into categories (name) " + "values (?)";
             // create the mysql insert prepared statement
@@ -180,6 +194,7 @@ public class DerbyDBModel implements IModel {
         catch(SQLException e) {
             throw new CostManagerException("Problem with adding cost!",e);
         }
+        stopConnection();
     }
 
     @Override
@@ -188,6 +203,7 @@ public class DerbyDBModel implements IModel {
          * Get all the cost between start date to end date, using the result set to output stream the data.
          * if fail throws exception.
          */
+        createConnection();
         String query = "SELECT * FROM inventory WHERE Date between '" + start + "' and '" + end + "'";
         try {
             rs = statement.executeQuery(query);
@@ -200,6 +216,7 @@ public class DerbyDBModel implements IModel {
         } catch (SQLException e) {
             throw new CostManagerException("Problem getting data from specified dates");
         }
+        stopConnection();
     }
 
     @Override
@@ -209,6 +226,7 @@ public class DerbyDBModel implements IModel {
          * inner join both tables inventory and category to get the name of the category,
          * between start and end dates,  the result (dataset) will be use  in the library function to create the pie chart.
          */
+        createConnection();
         try{
             String joinQuery = "SELECT * FROM inventory INNER JOIN categories on categoryId=categories.id WHERE Date " +
                     "between '" + start + "' and '" + end + "'";
@@ -226,6 +244,7 @@ public class DerbyDBModel implements IModel {
         } catch (SQLException | IOException e) {
             throw new CostManagerException("Problem getting data from specified dates");
         }
+        stopConnection();
     }
 }
 
