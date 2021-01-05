@@ -14,7 +14,7 @@ public class ViewNewCategory {
     private JButton addCategoryButton, backButton;
 
     /**
-     * view new catergory constructor
+     * view new category constructor
      */
     public ViewNewCategory() {
         addCategoryPanel = new JPanel();
