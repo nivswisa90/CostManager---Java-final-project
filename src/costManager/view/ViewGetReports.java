@@ -1,7 +1,12 @@
 package costManager.view;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Properties;
 
 public class ViewGetReports {
     /**
@@ -9,8 +14,9 @@ public class ViewGetReports {
      */
     private JPanel getReportPanel, buttonsPanel;
     private JLabel initialDateLabel, endDateLabel;
-    private JTextField initialDateField, endDateField;
+//    private JTextField initialDateField, endDateField;
     private JButton pieButton, reportButton, backButton;
+    private JDatePickerImpl datePickerInitial, datePickerEnd;
 
     /**
      * view get reports constructor
@@ -19,12 +25,22 @@ public class ViewGetReports {
         getReportPanel = new JPanel();
         buttonsPanel = new JPanel();
         initialDateLabel = new JLabel("Choose initial date");
-        initialDateField = new JTextField();
+//        initialDateField = new JTextField();
         endDateLabel = new JLabel("Choose end date");
-        endDateField = new JTextField();
+//        endDateField = new JTextField();
         pieButton = new JButton("Pie");
         reportButton = new JButton("Report");
         backButton = new JButton("Back");
+        UtilDateModel modelInitial = new UtilDateModel();
+        UtilDateModel modelEnd = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        JDatePanelImpl datePanelInitial = new JDatePanelImpl(modelInitial, p);
+        JDatePanelImpl datePanelEnd = new JDatePanelImpl(modelEnd, p);
+        datePickerInitial = new JDatePickerImpl(datePanelInitial, new DateLabelFormatter());
+        datePickerEnd = new JDatePickerImpl(datePanelEnd, new DateLabelFormatter());
     }
 
     /**
@@ -36,9 +52,9 @@ public class ViewGetReports {
         getReportPanel.setLayout(new GridLayout(2,2));
 
         getReportPanel.add(initialDateLabel);
-        getReportPanel.add(initialDateField);
+        getReportPanel.add(datePickerInitial);
         getReportPanel.add(endDateLabel);
-        getReportPanel.add(endDateField);
+        getReportPanel.add(datePickerEnd);
         
 
         return getReportPanel;

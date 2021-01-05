@@ -48,7 +48,7 @@ public class View implements IView {
 
         frame.add(mainPanel);
 
-        frame.setSize(800,400);
+        frame.setSize(600,300);
         frame.setVisible(true);
 
         /**
