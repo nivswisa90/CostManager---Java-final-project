@@ -1,6 +1,8 @@
 package costManager.model;
 
 
+import java.util.List;
+
 public interface IModel {
     /**
      * add a new cost to inventory table in database
@@ -25,6 +27,10 @@ public interface IModel {
     /**
      * get pie chartr from all the costs between specific dates
      */
-    public void getPieChart(String start, String end) throws CostManagerException;// and the way it splits?????
+    public void getPieChart(String start, String end) throws CostManagerException;
+
+    public CostItem[] getCostItems() throws CostManagerException;
+
+    List<String> getCategoryList() throws CostManagerException;
 
 }
