@@ -14,7 +14,7 @@ public class CostItem {
     private String description;
     private String date;
 
-    public CostItem(int id, Category category, double amount, Currency currency, String description, String date) {
+    public CostItem( int id,Category category, double amount, Currency currency, String description, String date) {
         /**
          * Constructor for the object, use the methods to assign the values inside the members.
          */
@@ -56,7 +56,7 @@ public class CostItem {
     @Override
     public String toString() {
         return "CostItem{" +
-                "id=" + id +
+                ", id=" + id +
                 ", category=" + category +
                 ", amount=" + amount +
                 ", currency=" + currency +

@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Tue Jan 05 10:08:37 IST 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-d197-39c1-00000f9bd298 
-on database directory /Users/martinmazas/Desktop/shenkar/3rd year/java/CostManager Project/gagamoDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
-Loaded from file:/Users/martinmazas/Downloads/db-derby-10.14.2.0-bin/lib/derby.jar
+Tue Jan 19 14:36:53 IST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0177-1aa5-da85-000007647ef8 
+on database directory /Users/nivswisa/Desktop/Shenkar/ThirdYear/Semester 1/Java/CostManager-Project/gagamoDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Loaded from file:/Users/nivswisa/Downloads/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=15.0.1+9-18
-user.dir=/Users/martinmazas/Desktop/shenkar/3rd year/java/CostManager Project
+user.dir=/Users/nivswisa/Desktop/Shenkar/ThirdYear/Semester 1/Java/CostManager-Project
 os.name=Mac OS X
 os.arch=x86_64
 os.version=10.16
