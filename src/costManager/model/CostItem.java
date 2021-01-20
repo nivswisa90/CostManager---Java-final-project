@@ -55,13 +55,20 @@ public class CostItem {
 
     @Override
     public String toString() {
-        return "CostItem{" +
-                ", id=" + id +
-                ", category=" + category +
-                ", amount=" + amount +
-                ", currency=" + currency +
-                ", description='" + description + '\'' +
-                ", date='" + date + '\'' +
-                '}';
+//        return "CostItem{" +
+//                " id=" + id +
+//                return "category=" + category.getName() +
+//                ", amount=" + amount +
+//                ", currency=" + currency +
+//                ", description='" + description + '\'' +
+//                ", date='" + date + '\'' +
+//                '}';
+        return id + "\t" +
+                date + "\t" +
+                currency + "\t" +
+                amount + "\t" +
+                category.getName() + "\t" +
+                description;
+
     }
 }

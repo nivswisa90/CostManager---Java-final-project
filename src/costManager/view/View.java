@@ -8,7 +8,6 @@ import costManager.viewmodel.IViewModel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import org.jfree.data.category.CategoryRangeInfo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 public class View implements IView {
 
@@ -48,13 +46,23 @@ public class View implements IView {
             @Override
             public void run() {
                 View.this.ui = new ApplicationUI();
-                View.this.ui.start();
+                View.this.ui.init();
             }
         });
     }
 
     public class ApplicationUI //
     {
+        //initial frame
+        private JFrame initialFrame;
+        private JPanel initialFramePanelTop,initialFramepanelBottom, initialFramePanelMain;
+        private JButton btGoCostItem, btGoReports;
+        private JScrollPane initialFrameScrollPane;
+//        private JTextArea textArea;
+        private JLabel lbWelcome;
+
+
+        //cost item frame
         private JFrame frame;
         private JPanel panelTop,panelBottom,panelMain,panelMessage;
         private JTextField tfItemSum, tfItemCurrency,tfItemDescription,tfMessage;
@@ -65,7 +73,27 @@ public class View implements IView {
         private JLabel lbItemSum,lbItemCurrency,lbItemDescription,lbMessage,lbCategory,lbDate;
         private JDatePickerImpl datePicker;
 
+
+
         public ApplicationUI() {
+            //initial
+            //creating the window
+            initialFrame = new JFrame("CostManager");
+            //creating the panels
+            initialFramePanelMain = new JPanel();
+            initialFramePanelMain.setBackground(Color.WHITE);
+            initialFramepanelBottom = new JPanel();
+            initialFramepanelBottom.setBackground(Color.GRAY);
+            btGoCostItem = new JButton("Add cost item");
+            btGoReports = new JButton("Get reports");
+//            textArea = new JTextArea();
+//            initialFrameScrollPane = new JScrollPane(textArea);
+            lbWelcome = new JLabel("Welcome to the Cost Manager application",SwingConstants.CENTER);
+            lbWelcome.setFont(new Font("Verdana", Font.PLAIN, 20));
+
+
+
+            //cost item
             List<String> categories = vm.getCategoryList();
             categoryBox = new JComboBox(categories.toArray());
             //creating the window
@@ -78,7 +106,7 @@ public class View implements IView {
             //creating the main ui components
             tfItemSum = new JTextField(8);
             tfItemCurrency = new JTextField(8);
-            tfItemDescription = new JTextField(20);
+            tfItemDescription = new JTextField(10);
             btAddCostItem = new JButton("Add Cost Item");
             textArea = new JTextArea();
             scrollPane = new JScrollPane(textArea);
@@ -86,7 +114,7 @@ public class View implements IView {
             lbItemDescription = new JLabel("Item Description:");
             lbItemSum = new JLabel("Item Sum:");
             lbCategory = new JLabel("Item Category:");
-            lbDate = new JLabel("Select the date");
+            lbDate = new JLabel("Select the date:");
             //creating the messages ui components
             lbMessage = new JLabel("Message: ");
             tfMessage = new JTextField(30);
@@ -99,7 +127,54 @@ public class View implements IView {
             datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
         }
 
-        public void start() {
+        public void init() {
+            // Adding components to the bottom panel
+            initialFramepanelBottom.add(btGoCostItem);
+            initialFramepanelBottom.add(btGoReports);
+
+            //setting BorderLayout as the LayoutManager for panelMain
+            initialFramePanelMain.setLayout(new BorderLayout());
+            initialFramePanelMain.add(lbWelcome);
+
+            //setting the window layout manager
+            initialFrame.setLayout(new BorderLayout());
+
+
+            //adding the main panel to the window
+            initialFrame.add(initialFramePanelMain, BorderLayout.CENTER);
+
+
+            //adding the message panel to the window
+            initialFrame.add(initialFramepanelBottom, BorderLayout.SOUTH);
+
+            //handling window closing
+            initialFrame.addWindowListener(new WindowAdapter() {
+                /**
+                 * Invoked when a window is in the process of being closed.
+                 * The close operation can be overridden at this point.
+                 *
+                 * @param e
+                 */
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+
+            //displaying the window
+            initialFrame.setSize(600, 300);
+            initialFrame.setVisible(true);
+
+            btGoCostItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    initialFrame.setVisible(false);
+                    costItem();
+                }
+            });
+        }
+
+        public void costItem() {
             //adding the components to the top panel
             panelTop.add(lbItemSum);
             panelTop.add(tfItemSum);
@@ -112,7 +187,6 @@ public class View implements IView {
             panelTop.add(lbDate);
             panelTop.add(datePicker);
             panelTop.add(btAddCostItem);
-
             //setting BorderLayout as the LayoutManager for panelMain
             panelMain.setLayout(new BorderLayout());
 
@@ -181,7 +255,7 @@ public class View implements IView {
                         Date selectedDate = (Date) datePicker.getModel().getValue();
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                         String reportDate = df.format(selectedDate);
-                        
+
                         CostItem item = new CostItem(44,finallCategory,sum,currency ,description,reportDate );//needs to change id to be dynamic
                         vm.addCostItem(item);
 

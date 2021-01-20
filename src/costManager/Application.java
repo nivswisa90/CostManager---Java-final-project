@@ -15,7 +15,6 @@ public class Application {
         IViewModel vm = new ViewModel();
 
         //connecting components together
-
         view.setViewModel(vm);
         vm.setModel(model);
         vm.setView(view);
