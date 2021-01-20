@@ -5,6 +5,9 @@ import costManager.model.CostItem;
 import costManager.model.CostManagerException;
 import costManager.model.Currency;
 import costManager.viewmodel.IViewModel;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 import org.jfree.data.category.CategoryRangeInfo;
 
 import javax.swing.*;
@@ -13,7 +16,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 
 public class View implements IView {
@@ -55,7 +62,8 @@ public class View implements IView {
         private JScrollPane scrollPane;
         private JComboBox categoryBox;
         private JTextArea textArea;
-        private JLabel lbItemSum,lbItemCurrency,lbItemDescription,lbMessage,lbCategory;
+        private JLabel lbItemSum,lbItemCurrency,lbItemDescription,lbMessage,lbCategory,lbDate;
+        private JDatePickerImpl datePicker;
 
         public ApplicationUI() {
             List<String> categories = vm.getCategoryList();
@@ -78,9 +86,17 @@ public class View implements IView {
             lbItemDescription = new JLabel("Item Description:");
             lbItemSum = new JLabel("Item Sum:");
             lbCategory = new JLabel("Item Category:");
+            lbDate = new JLabel("Select the date");
             //creating the messages ui components
             lbMessage = new JLabel("Message: ");
             tfMessage = new JTextField(30);
+            UtilDateModel model = new UtilDateModel();
+            Properties p = new Properties();
+            p.put("text.today", "Today");
+            p.put("text.month", "Month");
+            p.put("text.year", "Year");
+            JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+            datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
         }
 
         public void start() {
@@ -93,6 +109,8 @@ public class View implements IView {
             panelTop.add(tfItemDescription);
             panelTop.add(lbItemCurrency);
             panelTop.add(tfItemCurrency);
+            panelTop.add(lbDate);
+            panelTop.add(datePicker);
             panelTop.add(btAddCostItem);
 
             //setting BorderLayout as the LayoutManager for panelMain
@@ -160,9 +178,11 @@ public class View implements IView {
                         };
                         String cat = categoryBox.getSelectedItem().toString();
                         Category finallCategory = new Category(1,cat); // needs to change id to be dynamic
-
-
-                        CostItem item = new CostItem(44,finallCategory,sum,currency ,description,"2021-09-20" );//needs to change id to be dynamic
+                        Date selectedDate = (Date) datePicker.getModel().getValue();
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        String reportDate = df.format(selectedDate);
+                        
+                        CostItem item = new CostItem(44,finallCategory,sum,currency ,description,reportDate );//needs to change id to be dynamic
                         vm.addCostItem(item);
 
 

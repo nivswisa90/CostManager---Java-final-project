@@ -1,6 +1,5 @@
 package costManager.model;
 
-import org.jetbrains.annotations.NotNull;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -28,7 +27,7 @@ public class DerbyDBModel implements IModel {
     private List<CostItem> items = new ArrayList<>();
 
 
-    public void createTable(@NotNull String tableName, String columns) throws CostManagerException {
+    public void createTable(String tableName, String columns) throws CostManagerException {
         /**
          * Using just at the beginning, creates a table with name and information.
          * if table created successfully enters 3 default categories to a defined table;
