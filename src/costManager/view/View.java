@@ -65,8 +65,8 @@ public class View implements IView {
         //cost item frame
         private JFrame costItemFrame;
         private JPanel costItemPanelTop, costItemPanelBottom, costItemPanelMain, costItemPanelMessage;
-        private JTextField tfItemSum, tfItemCurrency,tfItemDescription,tfMessage;
-        private JButton btAddCostItem;
+        private JTextField tfItemSum, tfItemCurrency,tfItemDescription,tfMessage, tfNewCategory;
+        private JButton btAddCostItem, btNewCategory;
         private JScrollPane scrollPane;
         private JComboBox categoryBox;
         private JTextArea textArea;
@@ -105,6 +105,8 @@ public class View implements IView {
             //cost item
             List<String> categories = vm.getCategoryList();
             categoryBox = new JComboBox(categories.toArray());
+//            patternList.setEditable(true);
+//            patternList.addActionListener(this);
             //creating the window
             costItemFrame = new JFrame("CostManager");
             //creating the four panels
@@ -127,6 +129,8 @@ public class View implements IView {
             //creating the messages ui components
             lbMessage = new JLabel("Message: ");
             tfMessage = new JTextField(30);
+            btNewCategory = new JButton("Add a new Category");
+            tfNewCategory = new JTextField(25);
             UtilDateModel model = new UtilDateModel();
             Properties p = new Properties();
             p.put("text.today", "Today");
@@ -242,6 +246,8 @@ public class View implements IView {
             costItemPanelBottom.add(scrollPane);
 
             //adding the components to the messages panel
+            costItemPanelMessage.add(tfNewCategory);
+            costItemPanelMessage.add(btNewCategory);
             costItemPanelMessage.add(lbMessage);
             costItemPanelMessage.add(tfMessage);
 
@@ -309,6 +315,15 @@ public class View implements IView {
                     } catch(CostManagerException ex){
                         View.this.showMessage("problem with entered data... problem with description... "+ex.getMessage());
                     }
+                }
+            });
+
+            btNewCategory.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String cat = tfNewCategory.getText();
+                    Category newCategory = new Category(1,cat);
+                    vm.addNewCategory(newCategory);
                 }
             });
 

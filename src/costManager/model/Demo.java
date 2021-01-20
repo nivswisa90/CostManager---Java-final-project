@@ -15,8 +15,8 @@ public class Demo {
 //                    "currency varchar(250),description varchar(250),date DATE, FOREIGN KEY (categoryId) REFERENCES categories(id))");
 //
 //
-//            Category cat = new Category(5,"Super");
-//            model.addNewCategory(cat);
+            Category cat = new Category(5,"Super");
+            model.addNewCategory(cat);
 //            List<Category> categoryList = model.getCategoryList();
 //            for(int i = 0; i<categoryList.size(); i++) {
 //                System.out.println(categoryList.get(i));
@@ -34,8 +34,8 @@ public class Demo {
 //
 //            model.getPieChart("2020-01-01", "2021-12-31");
 //            model.getCostReport("2020-01-01", "2021-01-01");
-            List<String> cat = model.getCategoryList();
-            System.out.println(cat);
+//            List<String> cat = model.getCategoryList();
+//            System.out.println(cat);
 
 
         }catch (CostManagerException e) {

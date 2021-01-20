@@ -1,5 +1,6 @@
 package costManager.viewmodel;
 
+import costManager.model.Category;
 import costManager.model.CostItem;
 import costManager.model.CostManagerException;
 import costManager.model.IModel;
@@ -53,9 +54,23 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     CostItem [] items = model.getCostReport(initDate, endDate);
-                    System.out.println(items.toString());
                     view.showMessage("Get display report successfully!!");
                     view.showItems(items);
+                } catch (CostManagerException e) {
+                    view.showMessage((e.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void addNewCategory(Category category) {
+        pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    model.addNewCategory(category);
+                    view.showMessage("Added new category successfully!!");
                 } catch (CostManagerException e) {
                     view.showMessage((e.getMessage()));
                 }
