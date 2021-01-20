@@ -297,12 +297,11 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public void getCostReport(String start, String end) throws CostManagerException {
+    public CostItem[] getCostReport(String start, String end) throws CostManagerException {
         /**
          * Get all the cost between start date to end date, using the result set to output stream the data.
          * if fail throws exception.
          */
-
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -317,14 +316,26 @@ public class DerbyDBModel implements IModel {
             throw new CostManagerException("Problem with the connection", e);
         }
 
-        String query = "SELECT * FROM inventory WHERE Date between '" + start + "' and '" + end + "'";
+        String query = "SELECT * FROM inventory INNER JOIN categories on categoryId=categories.id WHERE Date " +
+                "between '" + start + "' and '" + end + "'";
         try {
             rs = statement.executeQuery(query);
             while (rs.next()) {
-                System.out.println("id - " + rs.getInt("id") + " \nCategory - " +
-                        rs.getInt("categoryId") + " \nAmount - " + rs.getDouble("amount") +
-                        " \ncurrency - " + rs.getString("currency") +
-                        " \nDescription - " + rs.getString("description") + " \nDate - " + rs.getDate("date"));
+                Currency currency = switch (rs.getString("currency")) {
+                    case "EURO" -> Currency.EURO;
+                    case "ILS" -> Currency.ILS;
+                    case "GBP" -> Currency.GBP;
+                    default -> Currency.USD;
+                };
+
+                Category category = new Category(rs.getInt("categoryId"), rs.getString("name"));
+                CostItem item = new CostItem(rs.getInt("id"), category, rs.getDouble("amount"),currency,
+                        rs.getString("description"), rs.getDate("date").toString());
+//                System.out.println("id - " + rs.getInt("id") + " \nCategory - " +
+//                        rs.getInt("categoryId") + " \nAmount - " + rs.getDouble("amount") +
+//                        " \ncurrency - " + rs.getString("currency") +
+//                        " \nDescription - " + rs.getString("description") + " \nDate - " + rs.getDate("date"));
+                items.add(item);
             }
         } catch (SQLException e) {
             throw new CostManagerException("Problem getting data from specified dates");
@@ -340,6 +351,7 @@ public class DerbyDBModel implements IModel {
         } catch (SQLException e) {
             throw new CostManagerException("Problem with closing result", e);
         }
+        return getCostItems();
     }
 
     @Override

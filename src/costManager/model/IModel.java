@@ -22,7 +22,7 @@ public interface IModel {
     /**
      * get report from all the costs between specific dates
      */
-    public void getCostReport(String start, String end) throws CostManagerException;
+    public CostItem[] getCostReport(String start, String end) throws CostManagerException;
 
     /**
      * get pie chartr from all the costs between specific dates

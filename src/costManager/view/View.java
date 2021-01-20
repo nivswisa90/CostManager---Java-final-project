@@ -63,8 +63,8 @@ public class View implements IView {
 
 
         //cost item frame
-        private JFrame frame;
-        private JPanel panelTop,panelBottom,panelMain,panelMessage;
+        private JFrame costItemFrame;
+        private JPanel costItemPanelTop, costItemPanelBottom, costItemPanelMain, costItemPanelMessage;
         private JTextField tfItemSum, tfItemCurrency,tfItemDescription,tfMessage;
         private JButton btAddCostItem;
         private JScrollPane scrollPane;
@@ -73,7 +73,16 @@ public class View implements IView {
         private JLabel lbItemSum,lbItemCurrency,lbItemDescription,lbMessage,lbCategory,lbDate;
         private JDatePickerImpl datePicker;
 
-
+        //reports frame
+        private JFrame reportsFrame;
+        private JPanel reportsPanelTop, reportsPanelBottom, reportsPanelMain, reportsPanelMessage;
+        private JTextField tfDateInit, tfDateEnd, tfReportsMessage;
+        private JButton btReports, btPieChart;
+        private JComboBox reportsBox;
+        private JTextArea reportsTextArea;
+        private JLabel lbDateInit, lbDateEnd, lbReportsMessage, lbReport;
+        private JDatePickerImpl initDatePicker, endDatePicker;
+        private JButton btGetReport;
 
         public ApplicationUI() {
             //initial
@@ -97,12 +106,12 @@ public class View implements IView {
             List<String> categories = vm.getCategoryList();
             categoryBox = new JComboBox(categories.toArray());
             //creating the window
-            frame = new JFrame("CostManager");
+            costItemFrame = new JFrame("CostManager");
             //creating the four panels
-            panelMain = new JPanel();
-            panelBottom = new JPanel();
-            panelTop = new JPanel();
-            panelMessage = new JPanel();
+            costItemPanelMain = new JPanel();
+            costItemPanelBottom = new JPanel();
+            costItemPanelTop = new JPanel();
+            costItemPanelMessage = new JPanel();
             //creating the main ui components
             tfItemSum = new JTextField(8);
             tfItemCurrency = new JTextField(8);
@@ -125,6 +134,34 @@ public class View implements IView {
             p.put("text.year", "Year");
             JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
             datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
+            //reports
+            reportsFrame = new JFrame("CostManager");
+            reportsPanelTop = new JPanel();
+            reportsPanelBottom = new JPanel();
+            reportsPanelBottom.setBackground(Color.WHITE);
+            reportsPanelMain = new JPanel();
+            reportsPanelMessage = new JPanel();
+            reportsPanelMessage.setBackground(Color.GREEN);
+            tfReportsMessage = new JTextField(30);
+            String[] reportType = {"Reports", "Pie Chart"};
+            reportsBox = new JComboBox(reportType);
+            reportsTextArea = new JTextArea();
+            lbDateInit = new JLabel("Select start date:");
+            lbDateEnd = new JLabel("Select end date:");
+            lbReportsMessage = new JLabel("Message:");
+            lbReport = new JLabel("Choose the report type:");
+            UtilDateModel initialDateReportmodel = new UtilDateModel();
+            UtilDateModel endDateReportmodel = new UtilDateModel();
+//            Properties pReportDate = new Properties();
+//            pReportDate.put("text.today", "Today");
+//            pReportDate.put("text.month", "Month");
+//            pReportDate.put("text.year", "Year");
+            JDatePanelImpl initDatePanel = new JDatePanelImpl(initialDateReportmodel, p);
+            JDatePanelImpl endDatePanel = new JDatePanelImpl(endDateReportmodel, p);
+            initDatePicker = new JDatePickerImpl(initDatePanel, new DateLabelFormatter());
+            endDatePicker = new JDatePickerImpl(endDatePanel, new DateLabelFormatter());;
+            btGetReport = new JButton("Get");
         }
 
         public void init() {
@@ -172,55 +209,63 @@ public class View implements IView {
                     costItem();
                 }
             });
+
+            btGoReports.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    initialFrame.setVisible(false);
+                    getReports();
+                }
+            });
         }
 
         public void costItem() {
             //adding the components to the top panel
-            panelTop.add(lbItemSum);
-            panelTop.add(tfItemSum);
-            panelTop.add(lbCategory);
-            panelTop.add(categoryBox);
-            panelTop.add(lbItemDescription);
-            panelTop.add(tfItemDescription);
-            panelTop.add(lbItemCurrency);
-            panelTop.add(tfItemCurrency);
-            panelTop.add(lbDate);
-            panelTop.add(datePicker);
-            panelTop.add(btAddCostItem);
+            costItemPanelTop.add(lbItemSum);
+            costItemPanelTop.add(tfItemSum);
+            costItemPanelTop.add(lbCategory);
+            costItemPanelTop.add(categoryBox);
+            costItemPanelTop.add(lbItemDescription);
+            costItemPanelTop.add(tfItemDescription);
+            costItemPanelTop.add(lbItemCurrency);
+            costItemPanelTop.add(tfItemCurrency);
+            costItemPanelTop.add(lbDate);
+            costItemPanelTop.add(datePicker);
+            costItemPanelTop.add(btAddCostItem);
             //setting BorderLayout as the LayoutManager for panelMain
-            panelMain.setLayout(new BorderLayout());
+            costItemPanelMain.setLayout(new BorderLayout());
 
             //setting GridLayout 1x1 as the LayoutManager for panelBottom
-            panelBottom.setLayout(new GridLayout(1, 1));
+            costItemPanelBottom.setLayout(new GridLayout(1, 1));
 
             //adding the components to the bottom panel
-            panelBottom.add(scrollPane);
+            costItemPanelBottom.add(scrollPane);
 
             //adding the components to the messages panel
-            panelMessage.add(lbMessage);
-            panelMessage.add(tfMessage);
+            costItemPanelMessage.add(lbMessage);
+            costItemPanelMessage.add(tfMessage);
 
             //setting a different color for the panel message
-            panelMessage.setBackground(Color.GREEN);
+            costItemPanelMessage.setBackground(Color.GREEN);
 
             //setting the window layout manager
-            frame.setLayout(new BorderLayout());
+            costItemFrame.setLayout(new BorderLayout());
 
             //adding the two panels to the main panel
             //panelMain.add(panelTop);
-            panelMain.add(panelBottom, BorderLayout.CENTER);
+            costItemPanelMain.add(costItemPanelBottom, BorderLayout.CENTER);
 
             //adding the main panel to the window
-            frame.add(panelMain, BorderLayout.CENTER);
+            costItemFrame.add(costItemPanelMain, BorderLayout.CENTER);
 
             //adding top panel to the window
-            frame.add(panelTop, BorderLayout.NORTH);
+            costItemFrame.add(costItemPanelTop, BorderLayout.NORTH);
 
             //adding the message panel to the window
-            frame.add(panelMessage, BorderLayout.SOUTH);
+            costItemFrame.add(costItemPanelMessage, BorderLayout.SOUTH);
 
             //handling window closing
-            frame.addWindowListener(new WindowAdapter() {
+            costItemFrame.addWindowListener(new WindowAdapter() {
                 /**
                  * Invoked when a window is in the process of being closed.
                  * The close operation can be overridden at this point.
@@ -259,7 +304,6 @@ public class View implements IView {
                         CostItem item = new CostItem(44,finallCategory,sum,currency ,description,reportDate );//needs to change id to be dynamic
                         vm.addCostItem(item);
 
-
                     } catch (NumberFormatException ex) {
                         View.this.showMessage("problem with entered sum... "+ex.getMessage());
                     } catch(CostManagerException ex){
@@ -269,8 +313,84 @@ public class View implements IView {
             });
 
             //displaying the window
-            frame.setSize(1200, 600);
-            frame.setVisible(true);
+            costItemFrame.setSize(1200, 600);
+            costItemFrame.setVisible(true);
+        }
+
+        public void getReports() {
+            reportsPanelTop.add(lbReport);
+            reportsPanelTop.add(reportsBox);
+            reportsPanelTop.add(lbDateInit);
+            reportsPanelTop.add(initDatePicker);
+            reportsPanelTop.add(lbDateEnd);
+            reportsPanelTop.add(endDatePicker);
+            reportsPanelTop.add(btGetReport);
+
+            //
+            reportsPanelMain.setLayout(new BorderLayout());
+
+            //
+            reportsPanelBottom.setLayout(new GridLayout(1,1));
+            reportsPanelBottom.add(scrollPane);
+
+            //
+            reportsPanelMessage.add(lbReportsMessage);
+            reportsPanelMessage.add(tfMessage);
+
+            //
+            reportsFrame.setBackground(Color.GREEN);
+
+            //
+            reportsFrame.setLayout(new BorderLayout());
+
+            //
+            reportsPanelMain.add(reportsPanelBottom, BorderLayout.CENTER);
+
+            //
+            reportsFrame.add(reportsPanelMain, BorderLayout.CENTER);
+
+            //
+            reportsFrame.add(reportsPanelTop, BorderLayout.NORTH);
+
+            //
+            reportsFrame.add(reportsPanelMessage, BorderLayout.SOUTH);
+
+            reportsFrame.addWindowListener(new WindowAdapter() {
+                /**
+                 * Invoked when a window is in the process of being closed.
+                 * The close operation can be overridden at this point.
+                 *
+                 * @param e
+                 */
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+
+            btGetReport.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String reportType = reportsBox.getSelectedItem().toString();
+
+                    Date initialSelectedDate = (Date) initDatePicker.getModel().getValue();
+                    Date endSelectedDate = (Date) endDatePicker.getModel().getValue();
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String initialReportDate = df.format(initialSelectedDate);
+                    String endReportDate = df.format(endSelectedDate);
+
+                    if(reportType.equals("Reports")) {
+                        System.out.println("reports");
+                        vm.getReport(initialReportDate, endReportDate);
+                    }
+                    else if(reportType.equals("Pie Chart")) {
+                        System.out.println("pie chart");
+                    }
+                }
+            });
+
+            reportsFrame.setSize(1200, 600);
+            reportsFrame.setVisible(true);
         }
 
         public void showMessage(String text) {
