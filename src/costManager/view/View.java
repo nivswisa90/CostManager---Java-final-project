@@ -66,7 +66,7 @@ public class View implements IView {
         private JFrame costItemFrame;
         private JPanel costItemPanelTop, costItemPanelBottom, costItemPanelMain, costItemPanelMessage;
         private JTextField tfItemSum, tfItemCurrency,tfItemDescription,tfMessage, tfNewCategory;
-        private JButton btAddCostItem, btNewCategory;
+        private JButton btAddCostItem, btNewCategory, backButton;
         private JScrollPane scrollPane;
         private JComboBox categoryBox;
         private JTextArea textArea;
@@ -157,15 +157,14 @@ public class View implements IView {
             lbReport = new JLabel("Choose the report type:");
             UtilDateModel initialDateReportmodel = new UtilDateModel();
             UtilDateModel endDateReportmodel = new UtilDateModel();
-//            Properties pReportDate = new Properties();
-//            pReportDate.put("text.today", "Today");
-//            pReportDate.put("text.month", "Month");
-//            pReportDate.put("text.year", "Year");
+
             JDatePanelImpl initDatePanel = new JDatePanelImpl(initialDateReportmodel, p);
             JDatePanelImpl endDatePanel = new JDatePanelImpl(endDateReportmodel, p);
             initDatePicker = new JDatePickerImpl(initDatePanel, new DateLabelFormatter());
             endDatePicker = new JDatePickerImpl(endDatePanel, new DateLabelFormatter());;
             btGetReport = new JButton("Get");
+
+            backButton = new JButton("Back");
         }
 
         public void init() {
@@ -246,10 +245,11 @@ public class View implements IView {
             costItemPanelBottom.add(scrollPane);
 
             //adding the components to the messages panel
-            costItemPanelMessage.add(tfNewCategory);
-            costItemPanelMessage.add(btNewCategory);
+            costItemPanelMessage.add(backButton);
             costItemPanelMessage.add(lbMessage);
             costItemPanelMessage.add(tfMessage);
+            costItemPanelMessage.add(tfNewCategory);
+            costItemPanelMessage.add(btNewCategory);
 
             //setting a different color for the panel message
             costItemPanelMessage.setBackground(Color.GREEN);
@@ -327,6 +327,14 @@ public class View implements IView {
                 }
             });
 
+            backButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    costItemFrame.setVisible(false);
+                    initialFrame.setVisible(true);
+                }
+            });
+
             //displaying the window
             costItemFrame.setSize(1200, 600);
             costItemFrame.setVisible(true);
@@ -349,6 +357,7 @@ public class View implements IView {
             reportsPanelBottom.add(scrollPane);
 
             //
+            reportsPanelMessage.add(backButton);
             reportsPanelMessage.add(lbReportsMessage);
             reportsPanelMessage.add(tfMessage);
 
@@ -395,12 +404,19 @@ public class View implements IView {
                     String endReportDate = df.format(endSelectedDate);
 
                     if(reportType.equals("Reports")) {
-                        System.out.println("reports");
                         vm.getReport(initialReportDate, endReportDate);
                     }
                     else if(reportType.equals("Pie Chart")) {
                         System.out.println("pie chart");
                     }
+                }
+            });
+
+            backButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    reportsFrame.setVisible(false);
+                    initialFrame.setVisible(true);
                 }
             });
 

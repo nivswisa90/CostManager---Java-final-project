@@ -96,7 +96,7 @@ public class DerbyDBModel implements IModel {
         List<String> categoryList = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM categories";
+            String query = "SELECT * FROM categories ORDER BY name";
             rs = statement.executeQuery(query);
             while (rs.next()) {
                 Category category = new Category(rs.getInt("id"), rs.getString("name"));
@@ -317,7 +317,7 @@ public class DerbyDBModel implements IModel {
         }
 
         String query = "SELECT * FROM inventory INNER JOIN categories on categoryId=categories.id WHERE Date " +
-                "between '" + start + "' and '" + end + "'";
+                "between '" + start + "' and '" + end + "' ORDER BY date";
         try {
             rs = statement.executeQuery(query);
             while (rs.next()) {
