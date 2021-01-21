@@ -281,7 +281,7 @@ public class DerbyDBModel implements IModel {
             // execute the prepared statement
             preparedStmt.execute();
         } catch (SQLException e) {
-            throw new CostManagerException("Problem with adding cost!", e);
+            throw new CostManagerException("Problem with adding category!", e);
         }
 
         if (statement != null) try {
@@ -360,7 +360,7 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public void getPieChart(String start, String end) throws CostManagerException {
+    public JFreeChart getPieChart(String start, String end) throws CostManagerException {
         /**
          * using jfreechart library to create image of pie chart with the relevant information,
          * inner join both tables inventory and category to get the name of the category,
@@ -370,6 +370,7 @@ public class DerbyDBModel implements IModel {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
+        JFreeChart chart;
 
         try {
             Class.forName(driver);
@@ -389,13 +390,12 @@ public class DerbyDBModel implements IModel {
             while (rs.next()) {
                 dataset.setValue(rs.getString("name"), Double.parseDouble(rs.getString("amount")));
             }
-            JFreeChart chart = ChartFactory.createPieChart("Category - amounts", dataset, true, true, false);
+            chart = ChartFactory.createPieChart3D("Category - amounts", dataset, true, true, false);
             int width = 560;
             int height = 370;
-            File pieChart = new File("Pie_Chart.jpeg");
-            ChartUtilities.saveChartAsJPEG(pieChart, chart, width, height);
-
-        } catch (SQLException | IOException e) {
+//            File pieChart = new File("Pie_Chart.jpeg");
+//            ChartUtilities.saveChartAsJPEG(pieChart, chart, width, height);
+        } catch (SQLException e) {
             throw new CostManagerException("Problem getting data from specified dates");
         }
 
@@ -409,6 +409,8 @@ public class DerbyDBModel implements IModel {
         } catch (SQLException e) {
             throw new CostManagerException("Problem with closing result", e);
         }
+
+        return  chart;
     }
 }
 

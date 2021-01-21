@@ -1,6 +1,8 @@
 package costManager.model;
 
 
+import org.jfree.chart.JFreeChart;
+
 import java.util.List;
 
 public interface IModel {
@@ -27,7 +29,7 @@ public interface IModel {
     /**
      * get pie chartr from all the costs between specific dates
      */
-    public void getPieChart(String start, String end) throws CostManagerException;
+    public JFreeChart getPieChart(String start, String end) throws CostManagerException;
 
     public CostItem[] getCostItems() throws CostManagerException;
 

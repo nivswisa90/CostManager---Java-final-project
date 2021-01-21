@@ -3,6 +3,7 @@ package costManager.view;
 
 import costManager.model.CostItem;
 import costManager.viewmodel.IViewModel;
+import org.jfree.chart.JFreeChart;
 
 public interface IView {
     /**
